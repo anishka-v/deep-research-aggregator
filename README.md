@@ -46,5 +46,52 @@ Perplexity,llm_deepresearch,https://api.perplexity.ai/chat/completions,,false
 
 - **`web_search_api`**: Traditional web search APIs
   - Examples: Google, Bing, Brave Search
- 
+
+ ## System Flow
+
+```
+┌─────────────────┐
+│ sites_config.csv│
+│ (Configuration) │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────────────────────────┐
+│   Research Aggregator (Main)        │
+│   - Config Parser                   │
+│   - API Adapter Factory             │
+│   - Parallel Query Orchestrator     │
+└────────┬────────────────────────────┘
+         │
+         ├──────────┬──────────┬──────────┐
+         ▼          ▼          ▼          ▼
+    ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐
+    │ Site 1 │ │ Site 2 │ │ Site N │ │Manual  │
+    │Research│ │  LLM   │ │ Web    │ │ Files  │
+    │  API   │ │  API   │ │Search  │ │        │
+    └────┬───┘ └────┬───┘ └────┬───┘ └────┬───┘
+         │          │          │          │
+         ▼          ▼          ▼          ▼
+    ┌────────────────────────────────────────┐
+    │      raw_results/ (JSON files)         │
+    └────────┬───────────────────────────────┘
+             │
+             ▼
+    ┌─────────────────┐
+    │  URL Extractor  │
+    │  (Regex-based)  │
+    └────────┬────────┘
+             │
+             ▼
+    ┌─────────────────┐
+    │  URL Normalizer │
+    │  & Deduplicator │
+    └────────┬────────┘
+             │
+             ▼
+    ┌─────────────────┐
+    │final_links.json │
+    └─────────────────┘
+```
+
 
