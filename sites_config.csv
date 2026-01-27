@@ -1,0 +1,62 @@
+site_name,site_type,api_endpoint,api_key,enabled
+Tavily,research_api,https://api.tavily.com/search,false
+Exa,research_api,https://api.exa.ai/search,,false
+Perplexity,llm_deepresearch,https://api.perplexity.ai/chat/completions,,false
+ChatGPT Deep Research,llm_deepresearch,https://api.openai.com/v1/chat/completions,false
+Gemini Deep Research,llm_deepresearch,https://generativelanguage.googleapis.com/v1/models/gemini-3-deep-think:generateContent,,false
+You.com,research_api,https://api.you.com/search,,false
+Brave Search,web_search_api,https://api.search.brave.com/res/v1/web/search,,false
+SerpAPI Google,web_search_api,https://serpapi.com/search,,false
+SearchAPI,web_search_api,https://www.searchapi.io/api/v1/search,,false
+Serper,web_search_api,https://google.serper.dev/search,,false
+Bing Search API,web_search_api,https://api.bing.microsoft.com/v7.0/search,,false
+Google Custom Search,web_search_api,https://www.googleapis.com/customsearch/v1,,false
+OpenAI GPT-4,llm_api,https://api.openai.com/v1/chat/completions,false
+Anthropic Claude,llm_api,https://api.anthropic.com/v1/messages,,false
+Google Gemini,llm_api,https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent,,false
+Together AI,llm_api,https://api.together.xyz/v1/chat/completions,,false
+Groq,llm_api,https://api.groq.com/openai/v1/chat/completions,,false
+Anyscale,llm_api,https://api.endpoints.anyscale.com/v1/chat/completions,,false
+Fireworks AI,llm_api,https://api.fireworks.ai/inference/v1/chat/completions,,false
+DeepInfra,llm_api,https://api.deepinfra.com/v1/openai/chat/completions,,false
+Replicate,llm_api,https://api.replicate.com/v1/predictions,,false
+Cohere,llm_api,https://api.cohere.ai/v1/chat,,false
+AI21 Labs,llm_api,https://api.ai21.com/studio/v1/chat/completions,,false
+Mistral AI,llm_api,https://api.mistral.ai/v1/chat/completions,,false
+Hugging Face Inference,llm_api,https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2,,false
+Amazon Bedrock,llm_api,https://bedrock-runtime.us-east-1.amazonaws.com,,false
+Azure OpenAI,llm_api,https://YOUR-RESOURCE.openai.azure.com/openai/deployments/YOUR-DEPLOYMENT/chat/completions,,false
+DuckDuckGo API,web_search_api,https://api.duckduckgo.com,,false
+Mojeek API,web_search_api,https://api.mojeek.com/search,,false
+Yandex Search API,web_search_api,https://yandex.com/search/xml,,false
+Baidu Search API,web_search_api,https://api.baidu.com/json/tongji/v1/ReportService/getData,,false
+Metaphor (legacy),research_api,https://api.metaphor.systems/search,,false
+Algolia,web_search_api,https://YOUR-APP-ID.algolia.net/1/indexes/YOUR-INDEX/query,,false
+Elasticsearch,web_search_api,http://localhost:9200/YOUR-INDEX/_search,,false
+Weaviate,research_api,https://YOUR-INSTANCE.weaviate.network/v1/graphql,,false
+Pinecone,research_api,https://YOUR-INDEX.pinecone.io/query,,false
+Qdrant,research_api,http://localhost:6333/collections/YOUR-COLLECTION/points/search,,false
+Meilisearch,web_search_api,http://localhost:7700/indexes/YOUR-INDEX/search,,false
+Typesense,web_search_api,http://localhost:8108/collections/YOUR-COLLECTION/documents/search,,false
+ScaleSerp,web_search_api,https://api.scaleserp.com/search,,false
+ValueSerp,web_search_api,https://api.valueserp.com/search,,false
+ZenSerp,web_search_api,https://app.zenserp.com/api/v2/search,,false
+DataForSEO,web_search_api,https://api.dataforseo.com/v3/serp/google/organic/live/advanced,,false
+Bright Data SERP API,web_search_api,https://api.brightdata.com/serp/google,,false
+Oxylabs SERP API,web_search_api,https://realtime.oxylabs.io/v1/queries,,false
+RapidAPI Google Search,web_search_api,https://google-search3.p.rapidapi.com/api/v1/search/q=,,false
+Contextual Web Search,web_search_api,https://contextualwebsearch-websearch-v1.p.rapidapi.com/api/Search/WebSearchAPI,,false
+Neutrino API Web Search,web_search_api,https://neutrinoapi.net/web-search,,false
+Programmable Search JSON API,web_search_api,https://customsearch.googleapis.com/customsearch/v1,,false
+Semantic Scholar API,research_api,https://api.semanticscholar.org/graph/v1/paper/search,,false
+arXiv API,research_api,http://export.arxiv.org/api/query,,false
+PubMed API,research_api,https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi,,false
+CrossRef API,research_api,https://api.crossref.org/works,,false
+CORE API,research_api,https://api.core.ac.uk/v3/search/works,,false
+OpenAlex API,research_api,https://api.openalex.org/works,,false
+BASE Search API,research_api,https://api.base-search.net/cgi-bin/BaseHttpSearchInterface.fcgi,,false
+Dimensions AI,research_api,https://app.dimensions.ai/api/dsl.json,,false
+Lens.org API,research_api,https://api.lens.org/scholarly/search,,false
+Example Manual Site 1,manual,,,false
+Example Manual Site 2,manual,,,false
+
