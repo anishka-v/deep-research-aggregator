@@ -13,3 +13,38 @@ This tool addresses the challenge of aggregating research results from multiple 
 5. **Produces a consolidated list** ranked by frequency across sources
 
 **Use Case:** When researching a topic, get a comprehensive list of relevant URLs by querying multiple AI research tools simultaneously.
+
+## Configuration
+
+### CSV Configuration File
+
+The `sites_config.csv` file contains all site configurations. Format:
+
+```csv
+site_name,site_type,api_endpoint,api_key,enabled
+Tavily,research_api,https://api.tavily.com/search,YOUR_API_KEY,false
+Perplexity,llm_deepresearch,https://api.perplexity.ai/chat/completions,,false
+```
+
+### Examples
+
+1. **Simple query**:
+   ```bash
+   python research_aggregator.py "What are the latest AI safety developments?"
+   ```
+
+### Site Types
+
+- **`llm_deepresearch`**: LLM-based agentic research APIs (searches web)
+  - Examples: Perplexity, ChatGPT Deep Research, Gemini Deep Think
+
+- **`research_api`**: Specialized research APIs that return structured results with URLs
+  - Examples: Tavily, Exa, Metaphor
+
+- **`llm_api`**: Regular Large Language Model APIs (simple prompting)
+  - Examples: OpenAI GPT-4, Claude, Gemini
+
+- **`web_search_api`**: Traditional web search APIs
+  - Examples: Google, Bing, Brave Search
+ 
+
