@@ -32,4 +32,20 @@ Poe (multi-model research bot hub),https://poe.com/,,false
 Kompas AI,https://kompas.ai/,,false
 Taskade AI Agents,https://www.taskade.com/,,false
 Undermind,https://www.undermind.ai/,,false
-Sider.AI
+Sider.AI,https://sider.ai/,,false
+Glean (enterprise research),https://www.glean.com/,,false
+Guru AI Search,https://www.getguru.com/,,false
+IBM watsonx Assistant,https://api.us-south.assistant.watson.cloud.ibm.com/,,false
+Azure AI Studio (agents/search),https://ai.azure.com/,,false
+Z.ai,https://z.ai/,,false
+Mistral,https://api.mistral.ai/v1/chat/completions,,false
+DeepSeek,https://api.deepseek.com/v1/chat/completions,,false
+Qwen,https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation,,false
+DeepAI,https://api.deepai.org/,,false
+Kimi,https://api.moonshot.cn/v1/chat/completions,,false
+ERNIE Bot,https://aip.baidubce.com/,,false
+OLMo,https://allenai.org/olmo,,false
+Amazon Nova,https://aws.amazon.com/ai/generative-ai/nova/,,false
+u14 Research,https://research.u14.app/,,false
+Liquid AI,https://www.liquid.ai/,,false
+Copilot,https://copilot.microsoft.com/,,false
