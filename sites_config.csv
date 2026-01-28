@@ -1,50 +1,35 @@
-site_name,site_type,api_endpoint,api_key,enabled
-ChatGPT Deep Research,llm_deepresearch,https://api.openai.com/v1/chat/completions,,false
-Perplexity,llm_deepresearch,https://api.perplexity.ai/chat/completions,,false
-Gemini Deep Research,llm_deepresearch,https://generativelanguage.googleapis.com/v1/models/gemini-3-deep-think:generateContent,,false
-Claude (Anthropic),llm_deepresearch,https://api.anthropic.com/v1/messages,,false
-Microsoft Copilot,llm_deepresearch,https://api.microsoft.com/,,false
-You.com (YouChat / Research),research_api,https://api.you.com/search,,false
-Phind,llm_deepresearch,https://www.phind.com/,,false
-Elicit,research_api,https://elicit.com/,,false
-Consensus,research_api,https://consensus.app/,,false
-SciSpace,research_api,https://typeset.io/,,false
-Research Rabbit,research_api,https://www.researchrabbit.ai/,,false
-Litmaps,research_api,https://www.litmaps.com/,,false
-Scite,research_api,https://scite.ai/,,false
-Humata,research_api,https://www.humata.ai/,,false
-NotebookLM,llm_deepresearch,https://notebooklm.google/,,false
-ScholarAI,research_api,https://scholarai.io/,,false
-Komo Search,web_search_api,https://komo.ai/,,false
-Andi Search,web_search_api,https://andisearch.com/,,false
-Grok,llm_deepresearch,https://grok.com/,,false
-Brave Search + AI,web_search_api,https://api.search.brave.com/res/v1/web/search,,false
-Arc Search,web_search_api,https://arc.net/,,false
-Kagi Assistant,web_search_api,https://kagi.com/,,false
-StepAI,llm_deepresearch,https://stepfun.ai/,,false
-Zotero + AI plugins,research_api,https://www.zotero.org/,,false
-Scholarcy,research_api,https://www.scholarcy.com/,,false
-Lateral.io,research_api,https://lateral.io/,,false
-Iris.ai,research_api,https://iris.ai/,,false
-Semantic Scholar (AI discovery),research_api,https://www.semanticscholar.org/,,false
-Meta AI,llm_deepresearch,https://www.meta.ai/,,false
-Poe (multi-model research bot hub),llm_deepresearch,https://poe.com/,,false
-Kompas AI,research_api,https://kompas.ai/,,false
-Taskade AI Agents,llm_deepresearch,https://www.taskade.com/,,false
-Undermind,research_api,https://www.undermind.ai/,,false
-Sider.AI,llm_deepresearch,https://sider.ai/,,false
-Glean (enterprise research),enterprise_search,https://www.glean.com/,,false
-Guru AI Search,enterprise_search,https://www.getguru.com/,,false
-IBM watsonx Assistant,llm_api,https://api.us-south.assistant.watson.cloud.ibm.com/,,false
-Azure AI Studio (agents/search),llm_api,https://ai.azure.com/,,false
-Z.ai,llm_api,https://z.ai/,,false
-Mistral,llm_api,https://api.mistral.ai/v1/chat/completions,,false
-DeepSeek,llm_api,https://api.deepseek.com/v1/chat/completions,,false
-Qwen,llm_api,https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation,,false
-DeepAI,llm_api,https://api.deepai.org/,,false
-Kimi,llm_api,https://api.moonshot.cn/v1/chat/completions,,false
-ERNIE Bot,llm_api,https://aip.baidubce.com/,,false
-OLMo,llm_api,https://allenai.org/olmo,,false
-Amazon Nova,llm_api,https://aws.amazon.com/ai/generative-ai/nova/,,false
-u14 Research,research_api,https://research.u14.app/,,false
-Liquid AI,llm_api,https://www.liquid.ai/,,false
+site_name,api_endpoint,api_key,enabled
+ChatGPT Deep Research,https://api.openai.com/v1/chat/completions,,false
+Perplexity,https://api.perplexity.ai/chat/completions,,false
+Gemini Deep Research,https://generativelanguage.googleapis.com/v1/models/gemini-3-deep-think:generateContent,,false
+Claude (Anthropic),https://api.anthropic.com/v1/messages,,false
+Microsoft Copilot,https://api.microsoft.com/,,false
+You.com (YouChat / Research),https://api.you.com/search,,false
+Phind,https://www.phind.com/,,false
+Elicit,https://elicit.com/,,false
+Consensus,https://consensus.app/,,false
+SciSpace,https://typeset.io/,,false
+Research Rabbit,https://www.researchrabbit.ai/,,false
+Litmaps,https://www.litmaps.com/,,false
+Scite,https://scite.ai/,,false
+Humata,https://www.humata.ai/,,false
+NotebookLM,https://notebooklm.google/,,false
+ScholarAI,https://scholarai.io/,,false
+Komo Search,https://komo.ai/,,false
+Andi Search,https://andisearch.com/,,false
+Grok,https://grok.com/,,false
+Brave Search + AI,https://api.search.brave.com/res/v1/web/search,,false
+Arc Search,https://arc.net/,,false
+Kagi Assistant,https://kagi.com/,,false
+StepAI,https://stepfun.ai/,,false
+Zotero + AI plugins,https://www.zotero.org/,,false
+Scholarcy,https://www.scholarcy.com/,,false
+Lateral.io,https://lateral.io/,,false
+Iris.ai,https://iris.ai/,,false
+Semantic Scholar (AI discovery),https://www.semanticscholar.org/,,false
+Meta AI,https://www.meta.ai/,,false
+Poe (multi-model research bot hub),https://poe.com/,,false
+Kompas AI,https://kompas.ai/,,false
+Taskade AI Agents,https://www.taskade.com/,,false
+Undermind,https://www.undermind.ai/,,false
+Sider.AI
