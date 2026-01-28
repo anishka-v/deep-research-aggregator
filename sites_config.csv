@@ -1,5 +1,5 @@
 site_name,site_type,api_endpoint,api_key,enabled
-Tavily,research_api,https://api.tavily.com/search,false
+Tavily,research_api,https://api.tavily.com/search,,false
 Exa,research_api,https://api.exa.ai/search,,false
 Perplexity,llm_deepresearch,https://api.perplexity.ai/chat/completions,,false
 ChatGPT Deep Research,llm_deepresearch,https://api.openai.com/v1/chat/completions,false
