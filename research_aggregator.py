@@ -7,6 +7,7 @@ College Project - Minimal Implementation
 
 import csv
 import json
+import os
 import re
 import sys
 import time
@@ -327,11 +328,14 @@ class ProviderFactory:
 class APIAdapter:
     """Base adapter for API calls"""
     
-    def __init__(self, site_config: Dict):
-        self.name = site_config['site_name']
-        self.site_type = site_config['site_type']
+    def __init__(self, site_config: Dict, browser_use_client=None, session_cache=None):
+        self.site_config = site_config
+        self.name = site_config.get('site_name', 'Unknown Site')
+        self.site_type = site_config.get('site_type', '')
         self.endpoint = site_config.get('api_endpoint', '')
         self.api_key = site_config.get('api_key', '')
+        self.browser_use_client = browser_use_client
+        self.session_cache = session_cache if session_cache is not None else {}
         self.timeout = 30
         
     def query(self, prompt: str) -> Optional[Dict]:
@@ -486,6 +490,125 @@ class WebSearchAPIAdapter(APIAdapter):
             return None
 
 
+class BrowserUseAdapter(APIAdapter):
+    """Adapter for Browser Use Cloud tasks (web automation)"""
+
+    DEFAULT_TASK_TEMPLATE = (
+        "Go to {site_url} and use the free version (no paid upgrades). "
+        "Run a deep research query for:\n\n"
+        "\"{prompt}\"\n\n"
+        "If login is required and no free access is available, respond with "
+        "\"LOGIN_REQUIRED\".\n"
+        "After results load, return:\n"
+        "1) A short summary of the page state\n"
+        "2) A list of all source URLs mentioned or linked in the report\n\n"
+        "Return as plain text with a section 'URLS:' followed by one URL per line."
+    )
+
+    def query(self, prompt: str) -> Optional[Dict]:
+        if self.browser_use_client is None:
+            print(f"  ✗ {self.name}: Browser Use client not initialized")
+            return None
+
+        site_url = self._resolve_site_url()
+        if not site_url:
+            print(f"  ⊘ {self.name}: No site_url provided")
+            return None
+
+        task_template = self._resolve_task_template()
+        task_text = task_template.format(site_url=site_url, prompt=prompt)
+
+        try:
+            task_kwargs = {'task': task_text}
+            session_id = self._resolve_session_id()
+            if session_id:
+                task_kwargs['sessionId'] = session_id
+            llm_model = self._resolve_llm_model()
+            if llm_model:
+                task_kwargs['llm'] = llm_model
+            task = self._create_task_with_fallback(task_kwargs)
+            result = task.complete()
+
+            output_text = getattr(result, 'output', None)
+            urls_from_output = self._extract_urls_from_output(output_text)
+            return {
+                'site_url': site_url,
+                'task_id': getattr(task, 'id', None),
+                'output': output_text,
+                'extracted_urls': urls_from_output,
+            }
+        except Exception as e:
+            print(f"  ✗ {self.name}: {str(e)}")
+            return None
+
+    def _resolve_site_url(self) -> str:
+        return self._get_config_value('site_url') or self.endpoint
+
+    def _resolve_task_template(self) -> str:
+        return self._get_config_value('automation_task') or self.DEFAULT_TASK_TEMPLATE
+
+    def _resolve_llm_model(self) -> Optional[str]:
+        return self._get_config_value('llm')
+
+    def _resolve_session_id(self) -> Optional[str]:
+        profile_id = self._get_config_value('profile_id')
+        if not profile_id:
+            return None
+        if profile_id in self.session_cache:
+            return self.session_cache[profile_id]
+        session_id = self._create_session(profile_id)
+        if session_id:
+            self.session_cache[profile_id] = session_id
+        return session_id
+
+    def _create_session(self, profile_id: str) -> Optional[str]:
+        sessions = getattr(self.browser_use_client, 'sessions', None)
+        if not sessions:
+            return None
+        for method_name in ('create_session', 'createSession'):
+            create_fn = getattr(sessions, method_name, None)
+            if create_fn:
+                try:
+                    session = create_fn(profile_id=profile_id)
+                except TypeError:
+                    session = create_fn(profileId=profile_id)
+                return getattr(session, 'id', None) or getattr(session, 'session_id', None) or getattr(session, 'sessionId', None)
+        return None
+
+    def _create_task_with_fallback(self, task_kwargs: Dict) -> any:
+        try:
+            return self.browser_use_client.tasks.create_task(**task_kwargs)
+        except TypeError:
+            if 'sessionId' in task_kwargs:
+                task_kwargs = dict(task_kwargs)
+                task_kwargs['session_id'] = task_kwargs.pop('sessionId')
+            return self.browser_use_client.tasks.create_task(**task_kwargs)
+
+    def _get_config_value(self, key: str) -> Optional[str]:
+        return self.site_config.get(key)
+
+    def _extract_urls_from_output(self, output_text: Optional[str]) -> List[str]:
+        if not output_text:
+            return []
+        urls = []
+        in_urls = False
+        for line in output_text.splitlines():
+            line_stripped = line.strip()
+            if not line_stripped:
+                continue
+            if line_stripped.lower() == 'urls:':
+                in_urls = True
+                continue
+            if in_urls:
+                if line_stripped.lower().startswith('summary'):
+                    break
+                if line_stripped.lower().startswith('url'):
+                    continue
+                if line_stripped.startswith('http://') or line_stripped.startswith('https://'):
+                    urls.append(line_stripped)
+        return urls
+
+
 class ManualAdapter(APIAdapter):
     """Adapter for manually saved results"""
     
@@ -508,8 +631,11 @@ class AdapterFactory:
     """Factory to create appropriate adapter based on site type"""
     
     @staticmethod
-    def create(site_config: Dict) -> APIAdapter:
+    def create(site_config: Dict, browser_use_client=None, force_browser_use: bool = False, session_cache=None) -> APIAdapter:
         site_type = site_config.get('site_type', '').lower()
+
+        if force_browser_use or site_type == 'web_automation':
+            return BrowserUseAdapter(site_config, browser_use_client=browser_use_client, session_cache=session_cache)
         
         if site_type == 'research_api':
             return ResearchAPIAdapter(site_config)
@@ -637,11 +763,14 @@ class URLDeduplicator:
 class ResearchAggregator:
     """Main orchestrator for the research aggregation"""
     
-    def __init__(self, config_path: str = "sites_config.csv"):
+    def __init__(self, config_path: str = "sites_config.csv", use_browser_use: bool = False):
         self.config = Config(config_path)
         self.sites = []
         self.raw_results_dir = Path("raw_results")
         self.raw_results_dir.mkdir(exist_ok=True)
+        self.use_browser_use = use_browser_use
+        self.browser_use_client = None
+        self.browser_use_sessions = {}
         
     def run(self, query: str, max_workers: int = 10):
         """Execute research aggregation"""
@@ -653,10 +782,22 @@ class ResearchAggregator:
         
         # Load configuration
         self.sites = self.config.load()
-        
+
         if not self.sites:
             print("✗ No enabled sites found in configuration")
             return
+
+        if self.use_browser_use:
+            api_key = os.getenv('BROWSER_USE_API_KEY')
+            if not api_key:
+                print("✗ BROWSER_USE_API_KEY is not set")
+                return
+            try:
+                from browser_use_sdk import BrowserUse
+                self.browser_use_client = BrowserUse(api_key=api_key)
+            except Exception as e:
+                print(f"✗ Failed to initialize Browser Use client: {e}")
+                return
         
         # Execute queries in parallel
         print(f"\n📡 Querying {len(self.sites)} sites in parallel...\n")
@@ -693,7 +834,12 @@ class ResearchAggregator:
             # Submit all tasks
             future_to_site = {}
             for site_config in self.sites:
-                adapter = AdapterFactory.create(site_config)
+                adapter = AdapterFactory.create(
+                    site_config,
+                    browser_use_client=self.browser_use_client,
+                    force_browser_use=self.use_browser_use,
+                    session_cache=self.browser_use_sessions
+                )
                 future = executor.submit(self._query_with_timing, adapter, query)
                 future_to_site[future] = site_config['site_name']
             
@@ -737,7 +883,11 @@ class ResearchAggregator:
         url_sources = {}
         
         for site_name, data in results.items():
-            urls = URLExtractor.extract(data)
+            urls = set()
+            if isinstance(data, dict) and data.get('extracted_urls'):
+                urls.update([u for u in data.get('extracted_urls', []) if u])
+            else:
+                urls.update(URLExtractor.extract(data))
             if urls:
                 url_sources[site_name] = list(urls)
                 print(f"  {site_name}: {len(urls)} URLs")
@@ -784,12 +934,22 @@ class ResearchAggregator:
 def main():
     """Main entry point"""
     if len(sys.argv) < 2:
-        print("Usage: python research_aggregator.py <query>")
-        print("   or: python research_aggregator.py @sample_query.txt")
+        print("Usage: python research_aggregator.py [--browser-use] <query>")
+        print("   or: python research_aggregator.py [--browser-use] @sample_query.txt")
         sys.exit(1)
-    
+
+    args = sys.argv[1:]
+    use_browser_use = False
+    if '--browser-use' in args:
+        use_browser_use = True
+        args = [arg for arg in args if arg != '--browser-use']
+
+    if not args:
+        print("✗ Error: Missing query argument")
+        sys.exit(1)
+
     # Get query from command line or file
-    query_arg = sys.argv[1]
+    query_arg = args[0]
     if query_arg.startswith('@'):
         # Load from file
         query_file = query_arg[1:]
@@ -803,10 +963,11 @@ def main():
         query = query_arg
     
     # Run aggregator
-    aggregator = ResearchAggregator()
+    aggregator = ResearchAggregator(use_browser_use=use_browser_use)
     aggregator.run(query)
 
 
 if __name__ == "__main__":
     main()
+
 
