@@ -1,5 +1,5 @@
-site_name,api_endpoint,api_key,enabled
-ChatGPT Deep Research,https://api.openai.com/v1/chat/completions,,false
+site_name,api_endpoint,api_key,enabled,site_url,automation_task,llm,profile_id
+ChatGPT Deep Research,https://api.openai.com/v1/chat/completions,,true,https://chatgpt.com/,"Open {site_url}. If not logged in, reply LOGIN_REQUIRED. Click the + button next to the prompt box, choose 'Deep research'. If a tooltip shows remaining uses, proceed. Enter this query exactly, appending: 'Include sources and list all source URLs at the end under a heading URLS: one URL per line.': {prompt}. Submit. Wait until the answer finishes streaming. Then open the Sources / Citations panel if available and collect every visible source URL. If none are visible, scroll the response and extract any URLs shown in the text. If still none, ask a follow-up: 'List all source URLs only.' Wait for the reply. Finally output 'URLS:' on its own line and list one URL per line (no other text).",gpt-4.1,41021ed7-9587-4caa-8d70-a728f4a981c5
 Perplexity,https://api.perplexity.ai/chat/completions,,false
 Gemini Deep Research,https://generativelanguage.googleapis.com/v1/models/gemini-3-deep-think:generateContent,,false
 Claude (Anthropic),https://api.anthropic.com/v1/messages,,false
@@ -17,7 +17,7 @@ NotebookLM,https://notebooklm.google/,,false
 ScholarAI,https://scholarai.io/,,false
 Komo Search,https://komo.ai/,,false
 Andi Search,https://andisearch.com/,,false
-Grok,https://grok.com/,,false
+Grok,https://grok.com/,,false,https://grok.com/,"Open {site_url}. If not logged in, reply LOGIN_REQUIRED. Start a new chat. Switch to Expert mode (or 'Expert' model) if available in the UI. Enter this query exactly: {prompt}. Submit and wait for completion. Then output 'URLS:' on its own line and list every source URL mentioned in the response, one per line.",gpt-4.1
 Brave Search + AI,https://api.search.brave.com/res/v1/web/search,,false
 Arc Search,https://arc.net/,,false
 Kagi Assistant,https://kagi.com/,,false
